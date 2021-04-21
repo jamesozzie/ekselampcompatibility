@@ -1,0 +1,28 @@
+/*
+Theme Name:   EksellChild
+Description:  Eksell Child
+Author:       James Osborne
+Author URL:   https://github.com/jamesozzie/ekselampcompatibility
+Template:     eksell
+Version:      1.0
+License:      GNU General Public License v2 or later
+License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  EksellChild
+*/
+
+/* Write here your own personal stylesheet */
+
+ 
+ .main-menu .sub-menu.ampsubmenu_visible{
+    display: block;
+ 
+}
+[amp] .main-menu li {
+ 	display: block;
+}
+[amp] ul ul .sub-menu-toggle-wrapper{
+	display:none; 
+}
+
+
+
