@@ -21,6 +21,11 @@ html[amp] .main-menu li {
 	display: block;
 }
 
-html[amp] ul ul .sub-menu-toggle-wrapper{
-	display:none; 
+html[amp] .spot-fade-in-scale, .spot-fade-up { 
+	opacity: 1.0 !important; 
+	transform: none !important;
+}
+
+html[amp] a.sub-menu-toggle.active ul.sub-menu{
+    display: block;
 }

@@ -44,20 +44,30 @@ if ( ! class_exists( 'AmpMenu' ) ) {
 	class AmpMenu extends Walker_Nav_Menu {
 
 		/**
-		 * Starts the element output.
+		 * Current Menu Item.
+		 *
+		 * @var Object
+		 */
+		private $current_menu_item;
+
+		/**
+		 * Starts the level output.
 		 *
 		 * @param string $output Used to append additional content (passed by reference).
 		 * @param int    $depth Depth of menu item. Used for padding.
 		 * @param array  $args An object of wp_nav_menu() arguments.
 		 */
 		public function start_lvl( &$output, $depth = 0, $args = array() ) {
-			$indent  = str_repeat( "\t", $depth );
-			$output .= "\n<div class='sub-menu-holder '>$indent<ul class=\"sub-menu\"  aria-expanded=\"true\" [class]=\"'sub-menu' + (ampsubmenu ? ' ampsubmenu_visible' : ' ampsubmenu_not_visible ') \">\n";
+			if ( ! empty( $this->current_menu_item ) ) {
+				$curitem      = $this->current_menu_item;
+				$current_item = $curitem->ID;
+				$output      .= "\n<div class='sub-menu-holder '><ul class=\"sub-menu\"  aria-expanded=\"true\" [class]=\"'sub-menu' + (ampsubmenu_$current_item ? ' ampsubmenu_visible' : ' ampsubmenu_not_visible ') \">\n";
+			}
 
 		}
 
 		/**
-		 * End of the element output.
+		 * End of the level output.
 		 *
 		 * @param string $output Used to append additional content (passed by reference).
 		 * @param int    $depth Depth of menu item. Used for padding.
@@ -67,6 +77,20 @@ if ( ! class_exists( 'AmpMenu' ) ) {
 			$indent  = str_repeat( "\t", $depth );
 			$output .= "$indent</ul></div>\n";
 
+		}
+
+		/**
+		 * Starts the element output.
+		 *
+		 * @param string $output Used to append additional content (passed by reference).
+		 * @param object $item Them Menu item object.
+		 * @param int    $depth Depth of menu item. Used for padding.
+		 * @param array  $args An object of wp_nav_menu() arguments.
+		 * @param int    $id An ID.
+		 */
+		public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+			$this->current_menu_item = $item;
+			parent::start_el( $output, $item, $depth, $args, $id );
 		}
 	}
 
@@ -113,20 +137,25 @@ if ( ! class_exists( 'AmpMenu' ) ) {
 		function eksell_filter_nav_menu_item_args_ampchildtheme( $args, $item, $depth ) {
 
 			// Add sub menu toggles to the main menu with toggles.
-			if ( $args->theme_location == 'main' && isset( $args->show_toggles ) ) {
+			if ( 'main' === $args->theme_location && isset( $args->show_toggles ) ) {
 
 				// Wrap the menu item link contents in a div, used for positioning.
 				$args->before = '<div class="ancestor-wrapper">';
 				$args->after  = '';
 
 				// Add a toggle to items with children.
-				if ( in_array( 'menu-item-has-children', $item->classes ) ) {
+				if ( in_array( 'menu-item-has-children', $item->classes, true ) ) {
 
 					$toggle_target_string = '.menu-modal .menu-item-' . $item->ID . ' &gt; .sub-menu';
 
-					// Add the sub menu toggle.
-					$args->after .= '<div class="sub-menu-toggle-wrapper" ><a href="#" on="tap:AMP.setState({ampsubmenu: !ampsubmenu})" class="toggle sub-menu-toggle stroke-cc" [class]="\'toggle sub-menu-toggle stroke-cc\' + (ampsubmenu ? \' active \' : \'  \')" data-toggle-target="' . $toggle_target_string . '" data-toggle-type="slidetoggle" data-toggle-duration="250" [aria-pressed]="ampsubmenu ? \'true\' : \'false\'" ><span class="screen-reader-text">' . esc_html__( 'Show sub menu', 'eksell' ) . '</span>' . eksell_get_theme_svg( 'ui', 'chevron-down', 18, 10 ) . '</a></div>';
-
+					if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+						$current_item = $item->ID;
+						// Add the AMP menu toggle.
+						$args->after .= '<div class="sub-menu-toggle-wrapper" ><a href="#" on="tap:AMP.setState({ampsubmenu_' . $current_item . ': !ampsubmenu_' . $current_item . '})" class="toggle sub-menu-toggle stroke-cc" [class]="\'toggle sub-menu-toggle stroke-cc\' + (ampsubmenu_' . $current_item . ' ? \' active \' : \'  \')" data-toggle-target="' . $toggle_target_string . '" data-toggle-type="slidetoggle" data-toggle-duration="250" [aria-pressed]="ampsubmenu_' . $current_item . ' ? \'true\' : \'false\'" ><span class="screen-reader-text">' . esc_html__( 'Show sub menu', 'eksell' ) . '</span>' . eksell_get_theme_svg( 'ui', 'chevron-down', 18, 10 ) . '</a></div>';
+					} else {
+						// Add the non-AMP menu toggle.
+						$args->after .= '<div class="sub-menu-toggle-wrapper"><a href="#" class="toggle sub-menu-toggle stroke-cc" data-toggle-target="' . $toggle_target_string . '" data-toggle-type="slidetoggle" data-toggle-duration="250"><span class="screen-reader-text">' . esc_html__( 'Show sub menu', 'eksell' ) . '</span>' . eksell_get_theme_svg( 'ui', 'chevron-down', 18, 10 ) . '</a></div>';
+					}
 				}
 
 				// Close the wrapper.

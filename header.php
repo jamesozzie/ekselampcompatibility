@@ -42,11 +42,19 @@
 			return;
 		}
 
-		// Include the site aside, which contains the navigation toggle on desktop.
-		get_template_part( 'inc/parts/site-aside' );
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			// Include the site aside, which contains the navigation toggle on desktop.
+			get_template_part( 'inc/parts/site-aside-amp' );
 
-		// Include the menu modal.
-		get_template_part( 'inc/parts/modal-menu' );
+			// Include the menu modal.
+			get_template_part( 'inc/parts/modal-menu-amp' );
+		} else {
+			// Include the site aside, which contains the navigation toggle on desktop.
+			get_template_part( 'inc/parts/site-aside' );
+
+			// Include the menu modal.
+			get_template_part( 'inc/parts/modal-menu' );
+		}
 
 		// If it's a blank canvas with the aside, output nothing past this point.
 		if ( $blank_canvas_with_aside ) {
@@ -152,20 +160,31 @@
 					eksell_the_social_menu();
 
 					if ( $enable_search ) :
-						?>
+						if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) :
+							?>
 
-						<a href="#" class="search-toggle toggle" [class]="'search-toggle toggle' + ( ampsearch ? ' active' : '' )" on="tap:AMP.setState({ampsearch: !ampsearch})" data-toggle-target=".search-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-search-modal" data-set-focus=".search-modal .search-field" aria-pressed="false" [aria-pressed]="ampsearch ? 'true' : 'false'" role="button" role="button" data-untoggle-below="700">
-							<span class="screen-reader-text"><?php esc_html_e( 'Search', 'eksell' ); ?></span>
-							<?php eksell_the_theme_svg( 'ui', 'search', 18, 18 ); ?>
-						</a>
-
-						<?php
+								<a href="#" class="search-toggle toggle" [class]="'search-toggle toggle' + ( ampsearch ? ' active' : '' )" on="tap:AMP.setState({ampsearch: !ampsearch})" data-toggle-target=".search-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-search-modal" data-set-focus=".search-modal .search-field" aria-pressed="false" [aria-pressed]="ampsearch ? 'true' : 'false'" role="button" role="button" data-untoggle-below="700">
+									<span class="screen-reader-text"><?php esc_html_e( 'Search', 'eksell' ); ?></span>
+									<?php eksell_the_theme_svg( 'ui', 'search', 18, 18 ); ?>
+								</a>
+								<?php else : ?>
+								<a href="#" class="search-toggle toggle" data-toggle-target=".search-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-search-modal" data-set-focus=".search-modal .search-field" aria-pressed="false" role="button" role="button" data-untoggle-below="700">
+									<span class="screen-reader-text"><?php esc_html_e( 'Search', 'eksell' ); ?></span>
+									<?php eksell_the_theme_svg( 'ui', 'search', 18, 18 ); ?>
+								</a>
+									<?php
+						endif;
 					endif;
 
 					$nav_toggle_class = $enable_search ? ' icon-menu-search' : ' icon-menu';
-					?>
 
-					<a href="#" class="nav-toggle mobile-nav-toggle toggle<?php echo esc_attr( $nav_toggle_class ); ?>" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" data-set-focus=".menu-modal .nav-untoggle" aria-pressed="false" role="button">
+					if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) :
+						?>
+						<a href="#" on="tap:AMP.setState({visible: !visible})" [class]="'toggle nav-toggle has-bars' + (visible ? ' active' : '')" [aria-pressed]="visible ? 'true' : 'false'" role="button" tabindex="0" class="nav-toggle mobile-nav-toggle toggle<?php echo esc_attr( $nav_toggle_class ); ?>" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" data-set-focus=".menu-modal .nav-untoggle" aria-pressed="false">
+					<?php else : ?>
+						<a href="#" class="nav-toggle mobile-nav-toggle toggle<?php echo esc_attr( $nav_toggle_class ); ?>" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" data-set-focus=".menu-modal .nav-untoggle" aria-pressed="false" role="button">
+					<?php endif; ?>	
+
 						<span class="screen-reader-text"><?php esc_html_e( 'Menu', 'eksell' ); ?></span>
 						<?php
 						// Determine the menu icon based on whether search is disabled.
@@ -196,5 +215,9 @@
 
 		// Output the search modal (if it isn't deactivated in the customizer).
 		if ( $enable_search ) {
-			get_template_part( 'inc/parts/modal-search' );
+			if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+					get_template_part( 'inc/parts/modal-search-amp' );
+			} else {
+					get_template_part( 'inc/parts/modal-search' );
+			}
 		}
