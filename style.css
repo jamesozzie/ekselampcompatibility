@@ -13,16 +13,14 @@ Text Domain:  EksellChild
 /* Write here your own personal stylesheet */
 
  
- .main-menu .sub-menu.ampsubmenu_visible{
-    display: block;
- 
+html[amp] .main-menu .sub-menu.ampsubmenu_visible{
+	display: block;
 }
-[amp] .main-menu li {
- 	display: block;
+
+html[amp] .main-menu li {
+	display: block;
 }
-[amp] ul ul .sub-menu-toggle-wrapper{
+
+html[amp] ul ul .sub-menu-toggle-wrapper{
 	display:none; 
 }
-
-
-

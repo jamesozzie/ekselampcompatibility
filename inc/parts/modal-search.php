@@ -1,3 +1,11 @@
+<?php
+/**
+ * Modal Search template part for Eksell.
+ *
+ * @package eksell
+ */
+
+?>
 <div class="search-modal cover-modal" [class]="'search-modal cover-modal' + ( ampsearch ? ' show-modal active' : '' )"  data-modal-target-string=".search-modal" aria-expanded="false" on="tap:AMP.setState({ampsearch: !ampsearch})">
 
 	<div class="search-modal-inner modal-inner bg-body-background">

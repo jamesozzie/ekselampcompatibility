@@ -1,3 +1,11 @@
+<?php
+/**
+ * Site aside template part for Eksell.
+ *
+ * @package eksell
+ */
+
+?>
 <aside id="site-aside">
 
 	<?php

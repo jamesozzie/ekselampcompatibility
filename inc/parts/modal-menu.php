@@ -1,3 +1,11 @@
+<?php
+/**
+ * Modal Menu template for part Eksell.
+ *
+ * @package eksell
+ */
+
+?>
 <div on="tap:AMP.setState({visible: !visible})" class="menu-modal cover-modal" [class]="'menu-modal cover-modal' + (visible ? ' show-modal active' : '')" data-modal-target-string=".menu-modal" aria-expanded="false" >
 
 	<div class="menu-modal-cover-untoggle" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" data-set-focus="#site-aside .nav-toggle"></div>
@@ -17,44 +25,44 @@
 
 			<div class="menu-top">
 
-				<?php 
+				<?php
 				do_action( 'eksell_menu_modal_top_start' );
 				?>
 
 				<ul class="main-menu reset-list-style">
 					<?php
 					if ( has_nav_menu( 'main' ) ) {
-						wp_nav_menu( array(
-							'container'      		=> '',
-							'items_wrap'     		=> '%3$s',
-							'show_toggles'   		=> true,
-							'theme_location' 		=> 'main',
-
-							'walker'         => new ampmenu
-
-
-
-						) );
+						wp_nav_menu(
+							array(
+								'container'      => '',
+								'items_wrap'     => '%3$s',
+								'show_toggles'   => true,
+								'theme_location' => 'main',
+								'walker'         => ( function_exists( 'amp_is_request' ) && amp_is_request() ) ? new AmpMenu() : '',
+							)
+						);
 					} else {
-						wp_list_pages( array( 
-							'match_menu_classes' 	=> true,
-							'title_li'           	=> false, 
-						) );
+						wp_list_pages(
+							array(
+								'match_menu_classes' => true,
+								'title_li'           => false,
+							)
+						);
 					}
 					?>
 				</ul><!-- .main-menu -->
 
-				<?php 
-				if ( get_theme_mod( 'eksell_enable_search', true ) ) : 
-					?>
+			<?php
+			if ( get_theme_mod( 'eksell_enable_search', true ) ) :
+				?>
 					<div class="menu-modal-search">
 						<?php get_search_form(); ?>
 					</div><!-- .menu-modal-search -->
-					<?php 
+				<?php
 				endif;
-				
+
 				do_action( 'eksell_menu_modal_top_end' );
-				?>
+			?>
 
 			</div><!-- .menu-top -->
 
@@ -62,11 +70,13 @@
 
 				<?php
 				do_action( 'eksell_menu_modal_bottom_start' );
-				
-				// Output the social menu, if set
-				eksell_the_social_menu( array(
-					'menu_class'	=> 'social-menu reset-list-style social-icons circular',
-				) );
+
+				// Output the social menu, if set.
+				eksell_the_social_menu(
+					array(
+						'menu_class' => 'social-menu reset-list-style social-icons circular',
+					)
+				);
 
 				do_action( 'eksell_menu_modal_bottom_end' );
 				?>
