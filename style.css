@@ -13,16 +13,19 @@ Text Domain:  EksellChild
 /* Write here your own personal stylesheet */
 
  
- .main-menu .sub-menu.ampsubmenu_visible{
+html[amp] .main-menu .sub-menu.ampsubmenu_visible{
+	display: block;
+}
+
+html[amp] .main-menu li {
+	display: block;
+}
+
+html[amp] .spot-fade-in-scale, .spot-fade-up { 
+	opacity: 1.0 !important; 
+	transform: none !important;
+}
+
+html[amp] a.sub-menu-toggle.active ul.sub-menu{
     display: block;
- 
 }
-[amp] .main-menu li {
- 	display: block;
-}
-[amp] ul ul .sub-menu-toggle-wrapper{
-	display:none; 
-}
-
-
-
