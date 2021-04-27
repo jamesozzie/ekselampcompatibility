@@ -6,7 +6,7 @@
  */
 
 ?>
-<div on="tap:AMP.setState({visible: !visible})" class="menu-modal cover-modal" [class]="'menu-modal cover-modal' + (visible ? ' show-modal active' : '')" data-modal-target-string=".menu-modal" aria-expanded="false" >
+<div class="menu-modal cover-modal" [class]="'menu-modal cover-modal' + (visible ? ' show-modal active' : '')" data-modal-target-string=".menu-modal" aria-expanded="false" >
 
 	<div class="menu-modal-cover-untoggle" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" data-set-focus="#site-aside .nav-toggle"></div>
 
@@ -16,7 +16,7 @@
 
 			<div class="menu-modal-toggles">
 
-				<a href="#" class="toggle nav-untoggle" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" aria-pressed="false" role="button" data-set-focus="#site-aside .nav-toggle">
+				<a on="tap:AMP.setState({visible: !visible})" tabindex="0" role="button" href="#" class="toggle nav-untoggle" data-toggle-target=".menu-modal" data-toggle-screen-lock="true" data-toggle-body-class="showing-menu-modal" aria-pressed="false" role="button" data-set-focus="#site-aside .nav-toggle">
 					<span class="screen-reader-text"><?php esc_html_e( 'Close', 'eksell' ); ?></span>
 					<?php eksell_the_theme_svg( 'ui', 'close', 18, 18 ); ?>
 				</a><!-- .nav-untoggle -->
